@@ -1,8 +1,11 @@
+import { PricingTable } from "@clerk/nextjs"
 
-const CompanionSession = () => {
+const Subscription = () => {
     return (
-        <div>Page</div>
+        <div>
+            <PricingTable/>
+        </div>
     )
 }
 
-export default CompanionSession
+export default Subscription
