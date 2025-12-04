@@ -1,8 +1,8 @@
 
-const Subscription = () => {
+const CompanionSession = () => {
     return (
         <div>Page</div>
     )
 }
 
-export default Subscription
+export default CompanionSession
