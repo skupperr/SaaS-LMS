@@ -14,6 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Ring } from 'ldrs/react'
+import 'ldrs/react/Ring.css'
+
 
 import {
   Select,
@@ -24,6 +27,9 @@ import {
 } from "@/components/ui/select"
 import { subjects } from "@/constants"
 import { Textarea } from "./ui/textarea"
+import { createCompanion } from "@/lib/actions/companion.actions"
+import { redirect } from "next/navigation"
+import { useState } from "react"
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Companion is required.' }),
@@ -36,6 +42,8 @@ const formSchema = z.object({
 
 
 const CompanionForm = () => {
+
+  const [isLoading, setIsLoading] = useState(false)
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,9 +59,18 @@ const CompanionForm = () => {
   })
 
   // 2. Define a submit handler.
-  const submit = (values: z.infer<typeof formSchema>) => {
+  const submit = async (values: z.infer<typeof formSchema>) => {
+    setIsLoading(true)
+    const companion = await createCompanion(values)
 
-    console.log(values)
+    if (companion) {
+      setIsLoading(true)
+      redirect(`/companions/${companion.id}`);
+    } else {
+      setIsLoading(false)
+      console.log("Failed to create companion");
+      redirect('/')
+    }
   }
 
   return (
@@ -84,7 +101,7 @@ const CompanionForm = () => {
                     <SelectValue placeholder="Select the subject" />
                   </SelectTrigger>
                   <SelectContent>
-                    {subjects.map((subject) =>(
+                    {subjects.map((subject) => (
                       <SelectItem value={subject} key={subject} className="capitalize">
                         {subject}
                       </SelectItem>
@@ -121,12 +138,12 @@ const CompanionForm = () => {
                     <SelectValue placeholder="Select the voice" />
                   </SelectTrigger>
                   <SelectContent>
-                      <SelectItem value='male'>
-                        Male
-                      </SelectItem>
-                      <SelectItem value='female'>
-                        Female
-                      </SelectItem>
+                    <SelectItem value='male'>
+                      Male
+                    </SelectItem>
+                    <SelectItem value='female'>
+                      Female
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -146,12 +163,12 @@ const CompanionForm = () => {
                     <SelectValue placeholder="Select the style" />
                   </SelectTrigger>
                   <SelectContent>
-                      <SelectItem value='formal'>
-                        Formal
-                      </SelectItem>
-                      <SelectItem value='casual'>
-                        Casual
-                      </SelectItem>
+                    <SelectItem value='formal'>
+                      Formal
+                    </SelectItem>
+                    <SelectItem value='casual'>
+                      Casual
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -172,7 +189,17 @@ const CompanionForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full cursor-pointer">Build Your Companion</Button>
+        <Button type="submit" disabled={isLoading} className="w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">Build Your Companion
+          {isLoading && 
+            <Ring
+              size="15"
+              stroke="2"
+              bgOpacity="0"
+              speed="2"
+              color="white"
+            />
+          }
+          </Button>
       </form>
     </Form>
   )
