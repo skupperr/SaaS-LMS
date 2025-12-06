@@ -3,7 +3,7 @@ import { getSubjectColor } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { Duru_Sans } from "next/font/google";
+import CompanionComponent from "@/components/companionComponent";
 
 interface CompanionSessionPageProps {
     params: Promise<{id: string}>
@@ -43,6 +43,12 @@ const CompanionSession = async ({params}: CompanionSessionPageProps) => {
 
                 <div className="items-start text-2xl max:md:hidden">{companion.duration} minutes</div>
             </article>
+
+            <CompanionComponent {...companion} 
+                companionId={id} 
+                userName={user.firstName!} 
+                userImage={user.imageUrl!}
+            />
         </main>
     )
 }
