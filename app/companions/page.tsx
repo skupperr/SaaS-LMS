@@ -24,7 +24,7 @@ const CompanionsLibrary = async ({searchParams}: SearchParams) => {
             </section>
             <section className="companions-grid">
                 {
-                    companions.map((companion) => (
+                    companions.map((companion: typeof companions[number]) => (
                     <CompanionCard 
                         key={companion.id} 
                         {...companion} 

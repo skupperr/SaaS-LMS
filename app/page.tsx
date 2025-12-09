@@ -15,7 +15,7 @@ const Page = async () => {
       <h1 className=''>Popular Companions</h1>
 
       <section className='home-section'>
-        {companions.map((companion) => (
+        {companions.map((companion: typeof companions[number]) => (
           <CompanionCard
             key={companion.id}
             {...companion}
