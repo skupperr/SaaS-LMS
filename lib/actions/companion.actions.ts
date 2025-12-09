@@ -233,12 +233,15 @@ export const newCompanionPermissions = async () => {
     let limit = 0;
 
     if(has({plan: 'pro'})){
+        console.log('pro');
         return true;
-    } else if(has({feature: '10_active_companions'})){
-        limit = 10;
     } else if(has({feature: '3_active_companions'})){
+        console.log('3');
         limit = 3;
-    }
+    } else if(has({feature: '10_active_companions'})){
+        console.log('10');
+        limit = 10;
+    } 
 
     const {data, error} = await supabase
     .from('companions').select('id', {count: 'exact'}).eq('author', userId)
