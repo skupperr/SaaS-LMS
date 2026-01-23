@@ -4,22 +4,23 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import CompanionComponent from "@/components/companionComponent";
+import Link from "next/link";
 
 interface CompanionSessionPageProps {
-    params: Promise<{id: string}>
+    params: Promise<{ id: string }>
 }
 
 // params: /url/{id}
 // searchParams: /url?key=value&key1=value1
 
-const CompanionSession = async ({params}: CompanionSessionPageProps) => {
+const CompanionSession = async ({ params }: CompanionSessionPageProps) => {
     const { id } = await params;
     const companion = await getCompanion(id);
     console.log(companion);
     const user = await currentUser();
 
-    if(!user) redirect('/sign-in')
-    if(!companion) redirect('/companions')
+    if (!user) redirect('/sign-in')
+    if (!companion) redirect('/companions')
 
 
     return (
@@ -27,9 +28,9 @@ const CompanionSession = async ({params}: CompanionSessionPageProps) => {
             <article className="flex rounded-border justify-between p-6 max-md:flex-col">
                 <div className="flex items-center gap-6">
                     <div className="size-[72px] flex items-center justify-center rounded-lg max-md:hidden"
-                        style={{backgroundColor: getSubjectColor(companion.subject)}}>
-                        
-                        <Image src={`/icons/${companion.subject}.svg`} alt={companion.subject} width={35} height={35}/>
+                        style={{ backgroundColor: getSubjectColor(companion.subject) }}>
+
+                        <Image src={`/icons/${companion.subject}.svg`} alt={companion.subject} width={35} height={35} />
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -42,12 +43,21 @@ const CompanionSession = async ({params}: CompanionSessionPageProps) => {
                     </div>
                 </div>
 
-                <div className="items-start text-2xl max:md:hidden">{companion.duration} minutes</div>
+                <div className="flex flex-col gap-3">
+                    <div className="items-center text-center text-2xl max:md:hidden">{companion.duration} minutes</div>
+                    <Link href={`/companions/${id}/history`} className="w-full">
+                        <button className="btn-primary w-full justify-center">
+                            Session History
+                        </button>
+                    </Link>
+                </div>
+
+
             </article>
 
-            <CompanionComponent {...companion} 
-                companionId={id} 
-                userName={user.firstName!} 
+            <CompanionComponent {...companion}
+                companionId={id}
+                userName={user.firstName!}
                 userImage={user.imageUrl!}
             />
         </main>
