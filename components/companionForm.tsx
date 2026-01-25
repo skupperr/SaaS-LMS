@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,7 +36,7 @@ const formSchema = z.object({
   topic: z.string().min(1, { message: 'Topic is required.' }),
   voice: z.string().min(1, { message: 'Voice is required.' }),
   style: z.string().min(1, { message: 'Style is required.' }),
-  duration: z.coerce.number().min(1, { message: 'Duration is required.' }),
+  duration: z.number().min(1, { message: 'Duration is required.' }),
 })
 
 
@@ -183,14 +182,20 @@ const CompanionForm = () => {
             <FormItem>
               <FormLabel>Estimated session duration in minutes</FormLabel>
               <FormControl>
-                <Input placeholder="15" type="number" {...field} className="input" />
+                <Input
+                  placeholder="15"
+                  type="number"
+                  {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  className="input"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button type="submit" disabled={isLoading} className="w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">Build Your Companion
-          {isLoading && 
+          {isLoading &&
             <Ring
               size="15"
               stroke="2"
@@ -199,7 +204,7 @@ const CompanionForm = () => {
               color="white"
             />
           }
-          </Button>
+        </Button>
       </form>
     </Form>
   )
