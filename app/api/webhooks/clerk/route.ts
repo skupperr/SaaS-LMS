@@ -53,30 +53,34 @@ export async function POST(req: Request) {
         return new Response("OK");
     }
 
-    /* =========================
-       SUBSCRIPTION EVENTS
-       ========================= */
     if (
         evt.type === "subscription.created" ||
         evt.type === "subscription.updated"
     ) {
-        const data = evt.data;
-        const userId = data.user_id;
+        const data = evt.data as any;
 
-        console.log("📨 SUBSCRIPTION EVENT RAW", JSON.stringify(data, null, 2));
+        const userId = data.payer?.user_id;
+
+        if (!userId) {
+            console.error("❌ No user_id on subscription");
+            return new Response("No user_id", { status: 400 });
+        }
+
+        // Find the active (or upcoming) subscription item
+        const activeItem =
+            data.items?.find((item: any) => item.status === "active") ??
+            data.items?.find((item: any) => item.status === "upcoming");
 
         let plan: "basic" | "core" | "pro" = "basic";
 
-        if (data.status === "active") {
-            if (data.plan?.slug === "pro") plan = "pro";
-            else if (data.plan?.slug === "core") plan = "core";
-        }
+        if (activeItem?.plan?.slug === "pro") plan = "pro";
+        else if (activeItem?.plan?.slug === "core") plan = "core";
 
         console.log("🔁 Updating plan", {
             userId,
-            status: data.status,
-            slug: data.plan?.slug,
             resolvedPlan: plan,
+            itemStatus: activeItem?.status,
+            slug: activeItem?.plan?.slug,
         });
 
         const { error } = await supabaseAdmin
