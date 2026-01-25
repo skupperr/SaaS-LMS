@@ -25,16 +25,32 @@ const Profile = async () => {
 
   return (
     <main className="min-lg:w-3/4">
-      <section className="flex justify-between gap-4 max-sm:flex-col items-center">
+      <section
+        className="
+      flex
+      justify-between
+      gap-6
+      max-sm:flex-col
+      items-center
+      bg-card
+      border
+      border-border
+      rounded-4xl
+      p-6
+      shadow-sm
+    "
+      >
         <div className="flex gap-4 items-center">
           <Image
             src={user.imageUrl}
             alt={user.firstName!}
             width={110}
             height={110}
+            className="rounded-2xl shadow-sm"
           />
-          <div className="flex flex-col gap-2">
-            <h1 className="font-bold text-2xl">
+
+          <div className="flex flex-col gap-1">
+            <h1 className="font-semibold text-xl tracking-tight">
               {user.firstName} {user.lastName}
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -42,32 +58,38 @@ const Profile = async () => {
             </p>
           </div>
         </div>
+
         <div className="flex gap-4">
-          <div className="border border-black rouded-lg p-3 gap-2 flex flex-col h-fit">
+          <div className="stat-card">
             <div className="flex gap-2 items-center">
-              <Image
-                src="/icons/check.svg"
-                alt="checkmark"
-                width={22}
-                height={22}
-              />
-              <p className="text-2xl font-bold">{sessionHistory.length}</p>
+              <Image src="/icons/check.svg" alt="checkmark" width={22} height={22} />
+              <p className="text-2xl font-semibold">
+                {sessionHistory.length}
+              </p>
             </div>
-            <div>Lessons completed</div>
+            <div className="text-sm text-muted-foreground">
+              Lessons completed
+            </div>
           </div>
-          <div className="border border-black rouded-lg p-3 gap-2 flex flex-col h-fit">
+
+          <div className="stat-card">
             <div className="flex gap-2 items-center">
               <Image src="/icons/cap.svg" alt="cap" width={22} height={22} />
-              <p className="text-2xl font-bold">{companions.length}</p>
+              <p className="text-2xl font-semibold">
+                {companions.length}
+              </p>
             </div>
-            <div>Companions created</div>
+            <div className="text-sm text-muted-foreground">
+              Companions created
+            </div>
           </div>
         </div>
       </section>
-      <Accordion type="multiple">
+
+      <Accordion type="multiple" className="mt-8 space-y-4">
         <AccordionItem value="bookmarks">
-          <AccordionTrigger className="text-2xl font-bold">
-            Bookmarked Companions {`(${bookmarkedCompanions.length})`}
+          <AccordionTrigger className="accordion-trigger">
+            Bookmarked Companions ({bookmarkedCompanions.length})
           </AccordionTrigger>
           <AccordionContent>
             <CompanionList
@@ -76,8 +98,9 @@ const Profile = async () => {
             />
           </AccordionContent>
         </AccordionItem>
+
         <AccordionItem value="recent">
-          <AccordionTrigger className="text-2xl font-bold">
+          <AccordionTrigger className="accordion-trigger">
             Recent Sessions
           </AccordionTrigger>
           <AccordionContent>
@@ -87,16 +110,21 @@ const Profile = async () => {
             />
           </AccordionContent>
         </AccordionItem>
+
         <AccordionItem value="companions">
-          <AccordionTrigger className="text-2xl font-bold">
-            My Companions {`(${companions.length})`}
+          <AccordionTrigger className="accordion-trigger">
+            My Companions ({companions.length})
           </AccordionTrigger>
           <AccordionContent>
-            <CompanionList title="My Companions" companions={companions} />
+            <CompanionList
+              title="My Companions"
+              companions={companions}
+            />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
     </main>
+
   );
 };
 export default Profile;

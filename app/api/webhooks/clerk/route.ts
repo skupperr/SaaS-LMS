@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
     const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET!);
 
-    let evt;
+    let evt: any;
     try {
         evt = wh.verify(rawBody, {
             "svix-id": svix_id,
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         evt.type === "subscription.created" ||
         evt.type === "subscription.updated"
     ) {
-        const data = evt.data as any;
+        const data = evt.data;
 
         const userId = data.payer?.user_id;
 
@@ -68,8 +68,8 @@ export async function POST(req: Request) {
 
         // Find the active (or upcoming) subscription item
         const activeItem =
-            data.items?.find((item: any) => item.status === "active") ??
-            data.items?.find((item: any) => item.status === "upcoming");
+            data.items?.find((item: { status: string; plan?: { slug: string } }) => item.status === "active") ??
+            data.items?.find((item: { status: string; plan?: { slug: string } }) => item.status === "upcoming");
 
         let plan: "basic" | "core" | "pro" = "basic";
 

@@ -24,42 +24,78 @@ const CompanionSession = async ({ params }: CompanionSessionPageProps) => {
 
     return (
         <main>
-            <article className="flex rounded-border justify-between p-6 max-md:flex-col">
-                <div className="flex items-center gap-6">
-                    <div className="size-[72px] flex items-center justify-center rounded-lg max-md:hidden"
-                        style={{ backgroundColor: getSubjectColor(companion.subject) }}>
+  <article
+    className="
+      flex
+      justify-between
+      p-6
+      max-md:flex-col
+      gap-6
+      bg-card
+      border
+      border-border
+      rounded-4xl
+      shadow-sm
+    "
+  >
+    <div className="flex items-center gap-6">
+      <div
+        className="
+          size-[72px]
+          flex
+          items-center
+          justify-center
+          rounded-xl
+          shadow-sm
+          max-md:hidden
+        "
+        style={{ backgroundColor: getSubjectColor(companion.subject) }}
+      >
+        <Image
+          src={`/icons/${companion.subject}.svg`}
+          alt={companion.subject}
+          width={35}
+          height={35}
+        />
+      </div>
 
-                        <Image src={`/icons/${companion.subject}.svg`} alt={companion.subject} width={35} height={35} />
-                    </div>
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-2 flex-wrap">
+          <p className="font-semibold text-xl tracking-tight">
+            {companion.name}
+          </p>
+          <div className="subject-badge max-sm:hidden">
+            {companion.subject}
+          </div>
+        </div>
 
-                    <div className="flex flex-col gap-2">
-                        <div className="flex items-center gap-2">
-                            <p className="font-bold text-2xl">{companion.name}</p>
-                            <div className="subject-badge max-sm:hidden">{companion.subject}</div>
-                        </div>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {companion.topic}
+        </p>
+      </div>
+    </div>
 
-                        <p className="text-lg">{companion.topic}</p>
-                    </div>
-                </div>
+    <div className="flex flex-col gap-3 items-end max-md:items-start">
+      <div className="text-sm text-muted-foreground max-md:hidden">
+        {companion.duration} minutes
+      </div>
 
-                <div className="flex flex-col gap-3">
-                    <div className="items-center text-center text-2xl max:md:hidden">{companion.duration} minutes</div>
-                    <Link href={`/companions/${id}/history`} className="w-full">
-                        <button className="btn-primary w-full justify-center">
-                            Session History
-                        </button>
-                    </Link>
-                </div>
+      <Link href={`/companions/${id}/history`} className="w-full">
+        <button className="btn-primary w-full justify-center">
+          Session History
+        </button>
+      </Link>
+    </div>
+  </article>
 
+  <CompanionComponent
+    {...companion}
+    companionId={id}
+    userName={user.firstName!}
+    userImage={user.imageUrl!}
+  />
+</main>
 
-            </article>
-
-            <CompanionComponent {...companion}
-                companionId={id}
-                userName={user.firstName!}
-                userImage={user.imageUrl!}
-            />
-        </main>
     )
 }
 

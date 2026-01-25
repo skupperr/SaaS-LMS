@@ -33,13 +33,38 @@ const CompanionCard = ({
     }
   };
   return (
-    <article className="companion-card" style={{ backgroundColor: color }}>
+    <article
+      className="
+    companion-card
+    border-border
+    bg-card
+    shadow-sm
+    transition-all
+    duration-200
+    hover:shadow-md
+    hover:-translate-y-0.5
+  "
+      style={{ backgroundColor: color }}
+    >
       <div className="flex justify-between items-center">
-        <div className="subject-badge">{subject}</div>
-        <button className="companion-bookmark" onClick={handleBookmark}>
+        <div className="subject-badge bg-primary/90 text-primary-foreground">
+          {subject}
+        </div>
+
+        <button
+          className="
+        companion-bookmark
+        border border-border
+        hover:bg-gray-700
+        transition
+      "
+          onClick={handleBookmark}
+        >
           <Image
             src={
-              bookmarked ? "/icons/bookmark-filled.svg" : "/icons/bookmark.svg"
+              bookmarked
+                ? "/icons/bookmark-filled.svg"
+                : "/icons/bookmark.svg"
             }
             alt="bookmark"
             width={12.5}
@@ -48,9 +73,16 @@ const CompanionCard = ({
         </button>
       </div>
 
-      <h2 className="text-2xl font-bold">{name}</h2>
-      <p className="text-sm">{topic}</p>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-1">
+        <h2 className="text-xl font-semibold tracking-tight">
+          {name}
+        </h2>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {topic}
+        </p>
+      </div>
+
+      <div className="flex items-center gap-2 text-muted-foreground">
         <Image
           src="/icons/clock.svg"
           alt="duration"
@@ -61,11 +93,21 @@ const CompanionCard = ({
       </div>
 
       <Link href={`/companions/${id}`} className="w-full">
-        <button className="btn-primary w-full justify-center">
+        <button
+          className="
+        btn-primary
+        w-full
+        justify-center
+        transition
+        hover:opacity-90
+        active:scale-[0.98]
+      "
+        >
           Launch Lesson
         </button>
       </Link>
     </article>
+
   );
 };
 
