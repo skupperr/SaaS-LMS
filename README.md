@@ -16,7 +16,7 @@ Learnly AI is a **production-grade SaaS learning platform** that enables student
 ---
 
 ## 🚀 Repository
-**GitHub:** https://github.com/skupperr/SaaS-LMS
+**GitHub:** https://github.com/skupperr/Learnly-AI-SaaS
 
 ---
 
